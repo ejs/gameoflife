@@ -112,7 +112,7 @@ class ComplexWorld(World):
         ymin = min(p.imag for p in self)
         ymax = max(p.imag for p in self)
         for x in range(xmin, xmax+1):
-            yield ''.join(('*' if x+y*1jin self else '.') for y in range(ymin, ymax+1))
+            yield ''.join(('*' if x+y*1j in self else '.') for y in range(ymin, ymax+1))
 
 
 if __name__ == '__main__':
