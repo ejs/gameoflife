@@ -122,10 +122,11 @@ if __name__ == '__main__':
     parser = optparse.OptionParser()
     parser.add_option('-i', dest='world', action='store_const', const=World, default=World)
     parser.add_option('-t', dest='world', action='store_const', const=ToridLife)
+    parser.add_option('-n', dest='number', action='store', type='int', default=10)
     options, args = parser.parse_args()
 
     world = options.world((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
-    for i in range(10):
+    for i in range(options.number):
         if not len(world):
             break
         for line in world.display():
