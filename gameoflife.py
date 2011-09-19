@@ -57,6 +57,14 @@ class World(object):
                 if dx or dy:
                     yield (x+dx, y+dy)
 
+    def display(self):
+        xmin = min(x for x, y in self)
+        xmax = max(x for x, y in self)
+        ymin = min(y for x, y in self)
+        ymax = max(y for x, y in self)
+        for x in range(xmin, xmax+1):
+            yield ''.join(('*' if (x, y) in self else '.') for y in range(ymin, ymax+1))
+
     def __getitem__(self, position):
         return self.cells[position]
     
@@ -97,3 +105,24 @@ class ComplexWorld(World):
             for dy in(-1j, 0, 1j):
                 if dx or dy:
                     yield position + dx + dy
+
+    def display(self):
+        xmin = min(p.real for p in self)
+        xmax = max(p.real for p in self)
+        ymin = min(p.imag for p in self)
+        ymax = max(p.imag for p in self)
+        for x in range(xmin, xmax+1):
+            yield ''.join(('*' if x+y*1jin self else '.') for y in range(ymin, ymax+1))
+
+
+if __name__ == '__main__':
+    #world = ComplexWorld((1+1j), (2+2j), (3+3j), (2+3j))
+    #world = World((1, 1), (2, 2), (3, 3), (2, 3))
+    world = ToridLife((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
+    for i in range(10):
+        if not len(world):
+            break
+        for line in world.display():
+            print line
+        world.tick()
+        print
