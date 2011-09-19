@@ -122,6 +122,27 @@ class ComplexWorld(World):
             yield ''.join(self.character_for_cell(x+y*1j) for y in range(ymin, ymax+1))
 
 
+class SeethroughDonut(ToridLife):
+    def neighbours(self, (x, y)):
+        for nx, ny in super(ToridLife, self).neighbours((x, y)):
+            yield nx%self.width, ny%self.height
+        yield (x+self.width/2)%self.width, y
+
+    def display(self):
+        for x in range(self.height/2):
+            yield ''.join(self.character_for_cell((x, y)) for y in range(self.width))
+
+    def character_for_cell(self, (x, y)):
+        negx = (self.width-x)%self.width
+        if (x, y) in self and (negx, y) in self:
+            return '*'
+        if (x, y) in self:
+            return '+'
+        if (negx, y) in self:
+            return 'x'
+        return '.'
+
+
 if __name__ == '__main__':
     import optparse
     #world = ComplexWorld((1+1j), (2+2j), (3+3j), (2+3j))
@@ -129,6 +150,7 @@ if __name__ == '__main__':
     parser = optparse.OptionParser()
     parser.add_option('-i', dest='world', action='store_const', const=World, default=World)
     parser.add_option('-t', dest='world', action='store_const', const=ToridLife)
+    parser.add_option('-s', dest='world', action='store_const', const=SeethroughDonut)
     parser.add_option('-f', dest='file', action='store')
     parser.add_option('-n', dest='number', action='store', type='int', default=10)
     options, args = parser.parse_args()
