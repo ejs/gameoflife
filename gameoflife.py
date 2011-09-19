@@ -129,10 +129,16 @@ if __name__ == '__main__':
     parser = optparse.OptionParser()
     parser.add_option('-i', dest='world', action='store_const', const=World, default=World)
     parser.add_option('-t', dest='world', action='store_const', const=ToridLife)
+    parser.add_option('-f', dest='file', action='store')
     parser.add_option('-n', dest='number', action='store', type='int', default=10)
     options, args = parser.parse_args()
 
-    world = options.world((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
+    if options.file:
+        start = [eval(line) for line in open(options.file)]
+        world = options.world(*start)
+    else:
+        world = options.world((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
+
     for i in range(options.number):
         if not len(world):
             break
