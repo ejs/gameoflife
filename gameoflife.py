@@ -116,9 +116,15 @@ class ComplexWorld(World):
 
 
 if __name__ == '__main__':
+    import optparse
     #world = ComplexWorld((1+1j), (2+2j), (3+3j), (2+3j))
-    #world = World((1, 1), (2, 2), (3, 3), (2, 3))
-    world = ToridLife((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
+
+    parser = optparse.OptionParser()
+    parser.add_option('-i', dest='world', action='store_const', const=World, default=World)
+    parser.add_option('-t', dest='world', action='store_const', const=ToridLife)
+    options, args = parser.parse_args()
+
+    world = options.world((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
     for i in range(10):
         if not len(world):
             break
