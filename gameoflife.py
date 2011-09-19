@@ -133,7 +133,7 @@ class SeethroughDonut(ToridLife):
             yield ''.join(self.character_for_cell((x, y)) for y in range(self.width))
 
     def character_for_cell(self, (x, y)):
-        negx = (self.width-x)%self.width
+        negx = (x+self.width/2)%self.width
         if (x, y) in self and (negx, y) in self:
             return '*'
         if (x, y) in self:
