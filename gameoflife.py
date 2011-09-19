@@ -148,11 +148,11 @@ if __name__ == '__main__':
     #world = ComplexWorld((1+1j), (2+2j), (3+3j), (2+3j))
 
     parser = optparse.OptionParser()
-    parser.add_option('-i', dest='world', action='store_const', const=World, default=World)
-    parser.add_option('-t', dest='world', action='store_const', const=ToridLife)
-    parser.add_option('-s', dest='world', action='store_const', const=SeethroughDonut)
-    parser.add_option('-f', dest='file', action='store')
-    parser.add_option('-n', dest='number', action='store', type='int', default=10)
+    parser.add_option('-i', help="infinte plane world", dest='world', action='store_const', const=World, default=World)
+    parser.add_option('-t', help="Torus (donut) world",  dest='world', action='store_const', const=ToridLife)
+    parser.add_option('-s', help="Seethroug torus world", dest='world', action='store_const', const=SeethroughDonut)
+    parser.add_option('-f', help="Source file", dest='file', action='store')
+    parser.add_option('-n', help="Maximum interations to run", dest='number', action='store', type='int', default=10)
     options, args = parser.parse_args()
 
     if options.file:
