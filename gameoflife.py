@@ -63,7 +63,10 @@ class World(object):
         ymin = min(y for x, y in self)
         ymax = max(y for x, y in self)
         for x in range(xmin, xmax+1):
-            yield ''.join(('*' if (x, y) in self else '.') for y in range(ymin, ymax+1))
+            yield ''.join(self.character_for_cell((x, y)) for y in range(ymin, ymax+1))
+
+    def character_for_cell(self, position):
+        return '*' if position in self else '.'
 
     def __getitem__(self, position):
         return self.cells[position]
@@ -98,6 +101,10 @@ class ToridLife(World):
         for nx, ny in super(ToridLife, self).neighbours((x, y)):
             yield nx%self.width, ny%self.height
 
+    def display(self):
+        for x in range(self.height):
+            yield ''.join(self.character_for_cell((x, y)) for y in range(self.width))
+
 
 class ComplexWorld(World):
     def neighbours(self, position):
@@ -112,7 +119,7 @@ class ComplexWorld(World):
         ymin = min(p.imag for p in self)
         ymax = max(p.imag for p in self)
         for x in range(xmin, xmax+1):
-            yield ''.join(('*' if x+y*1j in self else '.') for y in range(ymin, ymax+1))
+            yield ''.join(self.character_for_cell(x+y*1j) for y in range(ymin, ymax+1))
 
 
 if __name__ == '__main__':
