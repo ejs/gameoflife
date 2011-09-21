@@ -17,7 +17,7 @@ class World(object):
         self.step_time()
 
     def __len__(self):
-        return len(list(iter(self)))
+        return sum(1 for _ in self)
 
     def __iter__(self):
         for position in self.cells:
