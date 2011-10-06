@@ -17,7 +17,7 @@ class World(object):
         self.step_time()
 
     def __len__(self):
-        return len(list(iter(self)))
+        return sum(1 for _ in self)
 
     def __iter__(self):
         for position in self.cells:
@@ -153,6 +153,7 @@ if __name__ == '__main__':
     parser.add_option('-s', help="Seethroug torus world", dest='world', action='store_const', const=SeethroughDonut)
     parser.add_option('-f', help="Source file", dest='file', action='store')
     parser.add_option('-n', help="Maximum interations to run", dest='number', action='store', type='int', default=10)
+    parser.add_option('--visualise', help="Custom visualiser e.g. turtle.", dest='visualise', action='store')
     options, args = parser.parse_args()
 
     if options.file:
@@ -161,10 +162,17 @@ if __name__ == '__main__':
     else:
         world = options.world((4, 4), (1, 1), (2, 2), (3, 3), (2, 3))
 
-    for i in range(options.number):
-        if not len(world):
-            break
-        for line in world.display():
-            print line
-        world.tick()
-        print
+    if not options.visualise:
+        for i in range(options.number):
+            if not len(world):
+                break
+            for line in world.display():
+                print line
+            world.tick()
+            print
+    elif options.visualise.lower() == 'turtle':
+        from turtlevisualiser import TurtleVisualiser
+        TurtleVisualiser(world).visualise()
+    else:
+        import sys
+        print >>sys.stderr, 'Unknown visualiser: {0}'.format(options.visualise)
